@@ -1,2 +1,2 @@
-# project-template__platformer
-Created with CodeSandbox
+# project-example
+Example game project page
