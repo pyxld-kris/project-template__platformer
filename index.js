@@ -4,7 +4,7 @@ import Character from "./classes/Character.js";
 
 class PlayScene extends Phaser.Scene {
   preload() {
-    this.load.spritesheet("johnny", "./assets/johnny_sprite.png", {
+    this.load.spritesheet("player", "./assets/player-sprite.png", {
       frameWidth: 16,
       frameHeight: 16,
       margin: 0,
@@ -39,11 +39,11 @@ class PlayScene extends Phaser.Scene {
     );
 
     this.add
-      .text(64, 0, "Arrow keys to move and jump", {
-        font: "8px monospace",
+      .text(5, 0, "Use arrow keys to move", {
+        font: "16px monospace",
         fill: "#ffffff",
         padding: { x: 1, y: 1 },
-        backgroundColor: "#000000"
+        backgroundColor: "transparent"
       })
       .setScrollFactor(0);
   }
@@ -74,7 +74,7 @@ const config = {
   parent: "game-container",
   pixelArt: true,
   zoom: 1,
-  backgroundColor: "#000000",
+  backgroundColor: "#998877",
   scene: PlayScene,
   physics: {
     default: "arcade",
