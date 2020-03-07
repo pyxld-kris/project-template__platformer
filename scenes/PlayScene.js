@@ -3,18 +3,16 @@ import Phaser from "phaser";
 import Character from "../classes/Character.js";
 
 export default class PlayScene extends Phaser.Scene {
-  preload() {
-    this.load.spritesheet("player", "./assets/player-sprite.png", {
-      frameWidth: 16,
-      frameHeight: 16,
-      margin: 0,
-      spacing: 0
-    });
+  constructor() {
+    super("PlayScene");
   }
 
   create() {
-    this.johnny = new Character(this, 10, 0);
-    this.johnny.sprite.setCollideWorldBounds(true);
+    // Start UIScene, which will layer on top of PlayScene
+    this.scene.run("UIScene");
+
+    this.player = new Character(this, 10, 0);
+    this.player.sprite.setCollideWorldBounds(true);
 
     const camera = this.cameras.main;
     const cursors = this.input.keyboard.createCursorKeys();
@@ -22,34 +20,27 @@ export default class PlayScene extends Phaser.Scene {
 
     // Upper platform
     this.physics.add.collider(
-      this.johnny.sprite,
+      this.player.sprite,
       this.addPhysicalRectangle(150, 100, 500, 10, 0x00aa00)
     );
 
     // Middle platform
     this.physics.add.collider(
-      this.johnny.sprite,
+      this.player.sprite,
       this.addPhysicalRectangle(350, 200, 500, 10, 0x00aa00)
     );
 
     // Lower platform
     this.physics.add.collider(
-      this.johnny.sprite,
+      this.player.sprite,
       this.addPhysicalRectangle(250, 300, 500, 10, 0x00aa00)
     );
 
-    this.add
-      .text(5, 0, "Use arrow keys to move", {
-        font: "16px monospace",
-        fill: "#ffffff",
-        padding: { x: 1, y: 1 },
-        backgroundColor: "transparent"
-      })
-      .setScrollFactor(0);
+    //this.scene.add("UIScene");
   }
 
   update(time, delta) {
-    this.johnny.update(time, delta);
+    this.player.update(time, delta);
   }
 
   /* <Begin> helper functions added by Kris */
