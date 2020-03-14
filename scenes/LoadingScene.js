@@ -1,5 +1,10 @@
 import { Scene } from "phaser";
 
+const fontStyle = {
+  fontSize: "16px",
+  color: "#fff"
+};
+
 export default class LoadingScene extends Scene {
   constructor() {
     super("LoadingScene");
@@ -11,7 +16,8 @@ export default class LoadingScene extends Scene {
 
   preload() {
     // Actual loading follows
-
+    this.load.image("background", "../assets/background.png");
+    this.load.image("platform", "../assets/platform.png");
     this.load.spritesheet("player", "../assets/player-sprite.png", {
       frameWidth: 16,
       frameHeight: 16,
@@ -30,10 +36,7 @@ export default class LoadingScene extends Scene {
     let barHeight = 25;
 
     this.add
-      .text(centerX, centerY - 48, "Loading", {
-        fontSize: "2rem",
-        fontWeight: "bold"
-      })
+      .text(centerX, centerY - 24, "Loading", fontStyle)
       .setOrigin(0.5, 0.5);
 
     var progressBox = this.add.rectangle(

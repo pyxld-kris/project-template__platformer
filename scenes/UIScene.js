@@ -1,7 +1,12 @@
 import Phaser from "phaser";
 import { Scene } from "phaser";
 
-// Image imports
+const fontStyle = {
+  fontSize: "16px",
+  color: "#fff",
+  stroke: "#000",
+  strokeThickness: 3
+};
 
 export default class UIScene extends Scene {
   constructor() {
@@ -16,10 +21,7 @@ export default class UIScene extends Scene {
 
     // Create menu button
     let menuButton = this.add
-      .text(5, 5, "MENU", {
-        fontSize: "1rem",
-        fontWeight: "bold"
-      })
+      .text(5, 5, "MENU", fontStyle)
       .setOrigin(0, 0) // Make position based on top right corner
       .setInteractive()
       .on("pointerdown", () => {
@@ -33,11 +35,16 @@ export default class UIScene extends Scene {
     // Create RESTART menu item
     uiMenuContainer.add(
       this.add
-        .text(0, 0, "RESTART")
+        .text(0, 0, "RESTART", fontStyle)
         .setInteractive()
         .on("pointerdown", () => {
-          this.scene.manager.stop("CreditsScene");
-          this.scene.manager.start("PlayScene");
+          // Stop all running scenes
+          let sceneManager = this.scene.manager;
+          sceneManager.getScenes().forEach(function(scene) {
+            let sceneKey = scene.scene.key;
+            scene.scene.stop(sceneKey);
+          });
+          sceneManager.start("TitleScene");
         })
         .setOrigin(0, 0)
     );
@@ -45,12 +52,21 @@ export default class UIScene extends Scene {
     // Create CREDITS menu item
     uiMenuContainer.add(
       this.add
-        .text(0, 25, "CREDITS")
+        .text(0, 25, "CREDITS", fontStyle)
         .setInteractive()
         .on("pointerdown", () => {
+          uiMenuContainer.setVisible(false);
           this.scene.manager.start("CreditsScene");
         })
         .setOrigin(0, 0)
     );
+  }
+
+  // This keeps the UI scene stuck in front of other scenes
+  // and images, no matter when it's started/launched
+  update(time, delta) {
+    if (parseInt(time) % 20 === 0) {
+      this.scene.bringToTop();
+    }
   }
 }

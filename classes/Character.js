@@ -1,8 +1,17 @@
 import Phaser from "phaser";
 
-export default class Character {
+export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
+    super(scene, x, y, "player");
     this.scene = scene;
+
+    // Add to rendering engine
+    scene.add.existing(this);
+    // Create the physics-based sprite that we will move around and animate
+    scene.physics.add
+      .existing(this)
+      .setDrag(500, 0)
+      .setMaxVelocity(200, 400);
 
     // Create the animations we need from the player spritesheet
     const anims = scene.anims;
@@ -18,12 +27,6 @@ export default class Character {
       frameRate: 12,
       repeat: -1
     });
-
-    // Create the physics-based sprite that we will move around and animate
-    this.sprite = scene.physics.add
-      .sprite(x, y, "player", 0)
-      .setDrag(500, 0)
-      .setMaxVelocity(200, 400);
 
     // Track the arrow keys & OPQA
     const {
@@ -50,7 +53,7 @@ export default class Character {
 
   update() {
     const keys = this.keys;
-    const sprite = this.sprite;
+    const sprite = this;
     const onGround = sprite.body.blocked.down;
     const acceleration = onGround ? 600 : 200;
 
@@ -67,7 +70,7 @@ export default class Character {
 
     // Only allow the player to jump if they are on the ground
     if (onGround && (keys.up.isDown || keys.w.isDown)) {
-      sprite.setVelocityY(-5000 * 2);
+      sprite.setVelocityY(-250);
     }
 
     // Update the animation/texture based on the state of the player
@@ -84,6 +87,6 @@ export default class Character {
   }
 
   destroy() {
-    this.sprite.destroy();
+    super.destroy();
   }
 }

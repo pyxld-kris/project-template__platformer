@@ -1,6 +1,13 @@
 import Phaser from "phaser";
 import { Scene } from "phaser";
 
+const fontStyle = {
+  fontSize: "16px",
+  color: "#fff",
+  stroke: "#000",
+  strokeThickness: 2
+};
+
 let CREDITS_STRING = "Code: Dev Launchers\nArt: Dev Launchers";
 
 export default class CreditsScene extends Scene {
@@ -12,17 +19,11 @@ export default class CreditsScene extends Scene {
     let centerX = this.cameras.main.centerX;
     let centerY = this.cameras.main.centerY;
     this.add
-      .text(centerX, centerY - 50, "Credits", {
-        fontSize: "3rem",
-        fontWeight: "bold"
-      })
+      .text(centerX, centerY - 50, "Credits", fontStyle)
       .setOrigin(0.5, 0.5);
 
     this.add
-      .text(centerX, centerY, CREDITS_STRING, {
-        fontSize: "2rem",
-        fontWeight: "normal"
-      })
+      .text(centerX, centerY, CREDITS_STRING, fontStyle)
       .setOrigin(0.5, 0);
 
     this.input.on("pointerdown", () => {

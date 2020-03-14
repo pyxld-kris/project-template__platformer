@@ -7,17 +7,21 @@ import CreditsScene from "/scenes/CreditsScene.js";
 
 export const config = {
   type: Phaser.AUTO,
-  width: 500,
-  height: 300,
   parent: "game-container",
   pixelArt: true,
   zoom: 1,
-  backgroundColor: "#998877",
+  backgroundColor: "#000",
   scene: [LoadingScene, TitleScene, PlayScene, UIScene, CreditsScene],
   physics: {
     default: "arcade",
     arcade: {
       gravity: { y: 500 }
     }
+  },
+  scale: {
+    parent: "game-container",
+    mode: Phaser.Scale.FIT,
+    width: 500 / 2,
+    height: 300 / 2
   }
 };

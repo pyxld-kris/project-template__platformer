@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 
 import Character from "../classes/Character.js";
+import Platform from "../classes/Platform.js";
 
 export default class PlayScene extends Phaser.Scene {
   constructor() {
@@ -11,49 +12,37 @@ export default class PlayScene extends Phaser.Scene {
     // Start UIScene, which will layer on top of PlayScene
     this.scene.run("UIScene");
 
+    // Create background
+    this.background = this.add.sprite(0, 0, "background").setOrigin(0, 0);
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.background.width,
+      this.background.height
+    );
+
     this.player = new Character(this, 10, 0);
-    this.player.sprite.setCollideWorldBounds(true);
+    this.player.setCollideWorldBounds(true);
 
     const camera = this.cameras.main;
     const cursors = this.input.keyboard.createCursorKeys();
-    camera.setBounds(0, 0, this.game.config.width, this.game.config.height);
+    camera.setBounds(
+      0,
+      0,
+      this.physics.world.bounds.width,
+      this.physics.world.bounds.height
+    );
+    camera.startFollow(this.player);
 
     // Upper platform
-    this.physics.add.collider(
-      this.player.sprite,
-      this.addPhysicalRectangle(150, 100, 500, 10, 0x00aa00)
-    );
-
-    // Middle platform
-    this.physics.add.collider(
-      this.player.sprite,
-      this.addPhysicalRectangle(350, 200, 500, 10, 0x00aa00)
-    );
-
-    // Lower platform
-    this.physics.add.collider(
-      this.player.sprite,
-      this.addPhysicalRectangle(250, 300, 500, 10, 0x00aa00)
-    );
-
-    //this.scene.add("UIScene");
+    this.physics.add.collider(this.player, new Platform(this, 270, 115));
+    // Upper platform
+    this.physics.add.collider(this.player, new Platform(this, 160, 80));
+    // Upper platform
+    this.physics.add.collider(this.player, new Platform(this, 60, 40));
   }
 
   update(time, delta) {
     this.player.update(time, delta);
   }
-
-  /* <Begin> helper functions added by Kris */
-  //
-  //
-
-  addPhysicalRectangle(x, y, width, height, color, alphaIThinkMaybe) {
-    // TODO: alphaIThinkMaybe name change
-    let rect = this.add.rectangle(x, y, width, height, color, alphaIThinkMaybe);
-    rect = this.physics.add.existing(rect, true);
-
-    return rect;
-  }
-
-  /* </End> Helper functions added by kris */
 }
